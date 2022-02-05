@@ -2,6 +2,7 @@ import express from "express";
 import methodOverride from "method-override";
 import cookieParser from "cookie-parser";
 import pg from "pg";
+import jsSHA from 'jssha';
 
 const app = express();
 const { Pool } = pg;
@@ -23,7 +24,11 @@ app.use(express.static("public"));
 app.post("/signup", (request, response) => {
   const { email, password } = request.body;
 
-  const sqlQuery = `INSERT INTO users (email, password) VALUES ('${email}', '${password}')`;
+  const shaObj = new jsSHA('SHA-512', 'TEXT', {encoding: 'UTF8'});
+  shaObj.update(password);
+  const hashedPassword = shaObj.getHash('HEX');
+
+  const sqlQuery = `INSERT INTO users (email, password) VALUES ('${email}', '${hashedPassword}')`;
 
   pool.query(sqlQuery, (error, result) => {
     if (error) {
