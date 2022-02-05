@@ -20,8 +20,10 @@ app.use(methodOverride("_method"));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static("public"));
 
-app.post("/register", (request, response) => {
-  const sqlQuery = `SELECT * FROM notes`;
+app.post("/signup", (request, response) => {
+  const { email, password } = request.body;
+
+  const sqlQuery = `INSERT INTO users (email, password) VALUES ('${email}', '${password}')`;
 
   pool.query(sqlQuery, (error, result) => {
     if (error) {
@@ -29,23 +31,19 @@ app.post("/register", (request, response) => {
       return;
     }
 
-    const data = {
-      notes: result.rows,
-    };
-
-    data.notes.forEach((note, index) => {
-      data.notes[index].flockSize = data.notes[index].flock_size;
-      data.notes[index].dateTime = data.notes[index].date_time;
-      delete data.notes[index]["flock_size"];
-      delete data.notes[index]["date_time"];
-    });
-
-    response.render("notes", data);
+    console.log("User added");
+    response.render("signup");
   });
 });
 
-app.get("/register", (request, response) => {
-  const sqlQuery = `SELECT * FROM notes`;
+app.get("/signup", (request, response) => {
+  response.render("signup");
+});
+
+app.post("/login", (request, response) => {
+  const { email, password } = request.body;
+
+  const sqlQuery = `SELECT COUNT(*) FROM users WHERE email = '${email}' AND password = '${password}'`;
 
   pool.query(sqlQuery, (error, result) => {
     if (error) {
@@ -53,19 +51,17 @@ app.get("/register", (request, response) => {
       return;
     }
 
-    const data = {
-      notes: result.rows,
-    };
-
-    data.notes.forEach((note, index) => {
-      data.notes[index].flockSize = data.notes[index].flock_size;
-      data.notes[index].dateTime = data.notes[index].date_time;
-      delete data.notes[index]["flock_size"];
-      delete data.notes[index]["date_time"];
-    });
-
-    response.render("notes", data);
+    if (result.rowCount === 1) {
+      console.log("User found");
+    } else {
+      console.log("User not found");
+    }
+    response.render("login");
   });
+});
+
+app.get("/login", (request, response) => {
+  response.render("login");
 });
 
 app.listen(3004);
