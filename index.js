@@ -2,6 +2,7 @@ import express from "express";
 import methodOverride from "method-override";
 import cookieParser from "cookie-parser";
 import pg from "pg";
+import moment from "moment";
 
 const app = express();
 const { Pool } = pg;
@@ -20,6 +21,48 @@ app.use(methodOverride("_method"));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static("public"));
 
+app.delete("/note/:id/delete", (request, response) => {
+  const sqlQuery = `DELETE FROM notes WHERE id=${request.params.id}`;
+
+  pool.query(sqlQuery, (error, result) => {
+    if (error) {
+      console.log("Error executing query", error.stack);
+      return;
+    }
+
+    response.redirect(`/`);
+  });
+});
+
+app.put("/note/:id/edit", (request, response) => {
+  const sqlQuery = `UPDATE notes SET behavior = '${request.body.behavior}', flock_size = '${request.body.flockSize}', date_time = '${request.body.dateTime}' WHERE id=${request.params.id}`;
+
+  pool.query(sqlQuery, (error, result) => {
+    if (error) {
+      console.log("Error executing query", error.stack);
+      return;
+    }
+
+    response.redirect(`/note/${request.params.id}`);
+  });
+});
+
+app.get("/note/:id/edit", (request, response) => {
+  const sqlQuery = `SELECT * FROM notes WHERE id = '${request.params.id}'`;
+
+  pool.query(sqlQuery, (error, result) => {
+    if (error) {
+      console.log("Error executing query", error.stack);
+      return;
+    }
+    const data = result.rows[0];
+    data.flockSize = data.flock_size;
+    data.dateTime = moment(data.date_time).format().slice(0,16);
+
+    response.render("editNote", data);
+  });
+});
+
 app.get("/note/:id", (request, response) => {
   const sqlQuery = `SELECT * FROM notes WHERE id = '${request.params.id}'`;
 
@@ -28,9 +71,6 @@ app.get("/note/:id", (request, response) => {
       console.log("Error executing query", error.stack);
       return;
     }
-
-    console.log(result.rows[0]);
-
     const data = result.rows[0];
     data.flockSize = data.flock_size;
     data.dateTime = data.date_time;
@@ -87,4 +127,4 @@ app.get("/", (request, response) => {
   });
 });
 
-app.listen(3004);
+app.listen(3005);

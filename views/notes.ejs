@@ -39,7 +39,7 @@
                 <td><%= notes[i]['flockSize'] %></td>
                 <td><%= notes[i]['dateTime'] %></td>
                 <td>
-                  <a href="/note/<%= i %>" class="btn btn-primary">View</a>
+                  <a href="/note/<%= notes[i]['id'] %>" class="btn btn-primary">View</a>
                 </td>
               </tr>
               <% } %>
