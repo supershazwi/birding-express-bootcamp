@@ -14,7 +14,7 @@
     </button>
 
     <div class="collapse navbar-collapse" id="navbar">
-      <ul class="navbar-nav me-auto mb-2 mb-md-0">
+      <ul class="navbar-nav mb-2 mb-md-0">
         <li class="nav-item dropdown">
           <a
             class="nav-link dropdown-toggle"
@@ -30,7 +30,23 @@
           </ul>
         </li>
       </ul>
-        <ul class="navbar-nav mb-2 mb-md-0 d-flex">
+      <ul class="navbar-nav mb-2 me-auto mb-md-0">
+        <li class="nav-item dropdown">
+          <a
+            class="nav-link dropdown-toggle"
+            href="#"
+            id="speciesDropdown"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+            >Species</a
+          >
+          <ul class="dropdown-menu" aria-labelledby="speciesDropdown">
+            <li><a class="dropdown-item" href="/species/all">List</a></li>
+            <li><a class="dropdown-item" href="/species">Add</a></li>
+          </ul>
+        </li>
+      </ul>
+      <ul class="navbar-nav mb-2 mb-md-0 d-flex">
         <% if (userId) { %>
           <li class="nav-item dropdown">
             <a
@@ -55,7 +71,7 @@
             <a class="nav-link" href="/signup">Signup</a>
           </li>
         <% } %>
-        </ul>
+      </ul>
     </div>
   </div>
 </nav>

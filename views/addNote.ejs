@@ -58,6 +58,16 @@
                     ></textarea>
                   </div>
                 </div>
+                <div class="row g-3 mb-3">
+                  <div class="col-12">
+                    <label for="speciesIds" class="form-label">Species</label>
+                    <% species.forEach((species) => { %>  
+                      <br/>
+                      <input type="checkbox" name="speciesIds" value="<%= species.id %>" />
+                      <label><%= species.name %></label>
+                    <% }) %>
+                  </div>
+                </div>
                 
                 <div class="row g-3 mb-3">
                   <div class="col-12">

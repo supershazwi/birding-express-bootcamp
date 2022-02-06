@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>View Sighting</title>
+    <title>View Species</title>
 
     <!-- CSS only -->
     <link
@@ -23,64 +23,47 @@
         <div class="col-sm-12">
           <div class="card">
             <div class="card-header py-3">
-              <h4 class="my-0 fw-normal">Note Details</h4>
+              <h4 class="my-0 fw-normal">Species Details</h4>
             </div>
             <div class="card-body">
               <form
-                action="/note/<%= id %>/delete?_method=DELETE"
+                action="/species/<%= species.id %>/delete?_method=DELETE"
                 class="needs-validation"
                 novalidate=""
                 method="POST"
               >
               <div class="row g-3 mb-3">
                 <div class="col-12">
-                  <label for="behavior" class="form-label">Behavior</label>
+                  <label for="name" class="form-label">Name</label>
                   <hr />
-                  <p><%= behavior %></p>
+                  <p><%= species.name %></p>
                 </div>
               </div>
               <div class="row g-3 mb-3">
                 <div class="col-12">
-                  <label for="flockSize" class="form-label">Flock Size</label>
+                  <label for="scientificName" class="form-label">Scientific Name</label>
                   <hr />
-                  <p><%= flockSize %></p>
-                </div>
-              </div>
-              <div class="row g-3 mb-3">
-                <div class="col-12">
-                  <label for="species" class="form-label"
-                    >Species</label
-                  >
-                  <hr />
-                  <% species.forEach((species) => { %>
-                    <p><a href="/species/<%= species.id %>"><%= species.name %></a></p>
-                  <% }) %>
+                  <p><%= species.scientificName %></p>
                 </div>
               </div>
               <div class="row g-3 mb-3">
                 <div class="col-12">
                   <label for="dateTime" class="form-label"
-                    >Date & Time</label
+                    >Notes with Species</label
                   >
                   <hr />
-                  <p><%= dateTime %></p>
+                  <% notes.forEach((note) => { %>
+                    <p><a href="/note/<%= note.id %>"><%= note.id %></a></p>
+                  <% }) %>
                 </div>
               </div>
-              <div class="row g-3 mb-3">
-                <div class="col-12">
-                  <label for="createdBy" class="form-label">Creator</label>
-                  <hr />
-                  <p><%= email %></p>
-                </div>
-              </div>
-              <% if (parseInt(userId) === user_id) { %>
-              <a href="/note/<%= id %>/edit" class="btn btn-primary"
-                >Edit Note</a
+              
+              <a href="/species/<%= species.id %>/edit" class="btn btn-primary"
+                >Edit Species</a
               >
               <button type="submit" class="btn btn-danger">
-                Delete Note
+                Delete Species
               </button>
-              <% } %>
             </div>
           </div>
         </div>

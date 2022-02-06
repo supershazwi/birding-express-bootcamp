@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Edit Note</title>
+    <title>Add Species</title>
 
     <!-- CSS only -->
     <link
@@ -22,76 +22,46 @@
         <div class="col-sm-12">
           <div class="card">
             <div class="card-header py-3">
-              <h4 class="my-0 fw-normal">Edit Note</h4>
+              <h4 class="my-0 fw-normal">Add Species</h4>
             </div>
             <div class="card-body">
               <form
-                action="/note/<%= id %>/edit?_method=PUT"
+                action="/species"
                 class="needs-validation"
                 novalidate=""
                 method="POST"
               >
                 <div class="row g-3 mb-3">
                   <div class="col-12">
-                    <label for="behavior" class="form-label">Behavior</label>
+                    <label for="name" class="form-label">Name</label>
                     <input
                       type="text"
                       class="form-control"
-                      id="behavior"
-                      name="behavior"
+                      id="name"
+                      name="name"
                       placeholder=""
-                      value="<%= behavior %>"
+                      value=""
                       required=""
                     />
                   </div>
                 </div>
                 <div class="row g-3 mb-3">
                   <div class="col-12">
-                    <label for="flockSize" class="form-label">Flock Size</label>
+                    <label for="scientificName" class="form-label">Scientific Name</label>
                     <input
                       type="text"
                       class="form-control"
-                      id="flockSize"
-                      name="flockSize"
+                      id="scientificName"
+                      name="scientificName"
                       placeholder=""
-                      value="<%= flockSize %>"
+                      value=""
                       required=""
                     />
                   </div>
                 </div>
-                <div class="row g-3 mb-3">
-                  <div class="col-12">
-                    <label for="speciesIds" class="form-label">Species</label>
-                    <% species.forEach((species) => { %>  
-                      <br/>
-                      <% if (speciesIds.indexOf(species.id) !== -1) { %>
-                        <input type="checkbox" name="speciesIds" value="<%= species.id %>" checked />
-                      <% } else { %>
-                        <input type="checkbox" name="speciesIds" value="<%= species.id %>" />
-                      <% } %>
-                      
-                      <label><%= species.name %></label>
-                    <% }) %>
-                  </div>
-                </div>
-                <div class="row g-3 mb-3">
-                  <div class="col-12">
-                    <label for="dateTime" class="form-label"
-                      >Date & Time</label
-                    >
-                    <input
-                      type="datetime-local"
-                      class="form-control"
-                      id="dateTime"
-                      name="dateTime"
-                      placeholder=""
-                      value="<%= dateTime %>"
-                      required=""
-                    />
-                  </div>
-                </div>
+                
                 <button type="submit" class="btn btn-primary">
-                  Update Note
+                  Add Species
                 </button>
               </form>
             </div>
