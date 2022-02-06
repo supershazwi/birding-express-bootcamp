@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>View Sighting</title>
+    <title>View Note</title>
 
     <!-- CSS only -->
     <link
@@ -27,11 +27,13 @@
             </div>
             <div class="card-body">
               <form
+                id="form"
                 action="/note/<%= id %>/delete?_method=DELETE"
                 class="needs-validation"
                 novalidate=""
                 method="POST"
               >
+              <input type="hidden" id="noteId" value="<%= noteId %>" />
               <div class="row g-3 mb-3">
                 <div class="col-12">
                   <label for="behavior" class="form-label">Behavior</label>
@@ -85,6 +87,44 @@
           </div>
         </div>
       </div>
+
+      <div class="row mt-2">
+        <div class="col-sm-12">
+          <div class="card">
+            <div class="card-header py-3">
+              <h4 class="my-0 fw-normal">Comments</h4>
+            </div>
+            <div class="card-body">
+              <% comments.forEach((comment) => { %>
+                <div class="card">
+                  <div class="card-body">
+                    <p class="mb-0">
+                      <%= comment.comment %>
+                    </p>
+                    <small>- <%= comment.email %></small>
+                  </div>
+                </div>
+                <br />
+              <% }) %>
+              <div class="row g-3 mb-3">
+                <div class="col-12">
+                  <textarea
+                    class="form-control"
+                    id="comment"
+                    name="comment"
+                    placeholder=""
+                    value=""
+                    required=""
+                  ></textarea>
+                </div>
+              </div>
+              <a id="addComment" class="btn btn-primary">
+                Add Comment
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- JavaScript Bundle with Popper -->
@@ -93,5 +133,12 @@
       integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
       crossorigin="anonymous"
     ></script>
+
+    <script type="text/javascript">
+      document.getElementById('addComment').addEventListener('click', () => {
+        document.getElementById('form').action = `/note/${document.getElementById('noteId').value}/comment`;
+        document.getElementById('form').submit();
+      });
+    </script>
   </body>
 </html>

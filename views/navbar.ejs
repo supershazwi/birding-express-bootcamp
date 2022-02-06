@@ -58,6 +58,7 @@
               >UserId: <%= userId %></a
             >
             <ul class="dropdown-menu" aria-labelledby="notesDropdown">
+              <li><a class="dropdown-item" href="/users/<%= userId %>">Profile</a></li>
               <form action="/logout?_method=DELETE" method="POST">
                 <li><button type="submit" class="dropdown-item">Logout</button></li>
               </form>

@@ -32,22 +32,30 @@ app.get("/users/:id", (request, response) => {
       return;
     }
 
-    const data = {
-      notes: result.rows,
-    };
+    const sqlQuery2 = `SELECT * FROM comments WHERE user_id = ${request.params.id}`;
 
-    data.notes.forEach((note, index) => {
-      data.notes[index].flockSize = data.notes[index].flock_size;
-      data.notes[index].dateTime = data.notes[index].date_time;
-      delete data.notes[index]["flock_size"];
-      delete data.notes[index]["date_time"];
+    pool.query(sqlQuery2, (error2, result2) => {
+      if (error2) {
+        console.log("Error executing query", error2.stack);
+        return;
+      }
+
+      const data = {
+        notes: result.rows,
+      };
+
+      data.notes.forEach((note, index) => {
+        data.notes[index].flockSize = data.notes[index].flock_size;
+        data.notes[index].dateTime = data.notes[index].date_time;
+        delete data.notes[index]["flock_size"];
+        delete data.notes[index]["date_time"];
+      });
+
+      data.userId = request.cookies.userId;
+      data.comments = result2.rows;
+
+      response.render("viewUser", data);
     });
-
-    data.userId = request.cookies.userId;
-
-    console.log(data);
-
-    response.render("notes", data);
   });
 });
 
@@ -265,19 +273,33 @@ app.get("/note/:id", (request, response) => {
 
     pool.query(sqlQuery2, (error2, result2) => {
       if (error2) {
-        console.log("Error executing query", error.stack);
+        console.log("Error executing query", error2.stack);
         return;
       }
 
-      const data = result.rows[0];
-      data.flockSize = data.flock_size;
-      data.dateTime = data.date_time;
-      delete data["flock_size"];
-      delete data["date_time"];
-      data.userId = request.cookies.userId;
-      data.species = result2.rows;
-      
-      response.render("viewNote", data);
+      const sqlQuery3 = `SELECT users.email, comments.comment, comments.created_at FROM comments INNER JOIN users ON comments.user_id = users.id WHERE note_id = ${request.params.id}`;
+
+      pool.query(sqlQuery3, (error3, result3) => {
+        if (error3) {
+          console.log("Error executing query", error3.stack);
+          return;
+        }
+
+        
+        const data = result.rows[0];
+        data.flockSize = data.flock_size;
+        data.dateTime = data.date_time;
+        delete data["flock_size"];
+        delete data["date_time"];
+        data.userId = request.cookies.userId;
+        data.noteId = request.params.id;
+        data.species = result2.rows;
+        data.comments = result3.rows;
+
+        console.log(data.comments);
+        
+        response.render("viewNote", data);
+      });
     });
   });
 });
@@ -448,8 +470,44 @@ app.delete("/note/:id/delete", (request, response) => {
       return;
     }
 
-    response.redirect(`/`);
+    const sqlQuery2 = `DELETE FROM notes_species WHERE notes_id=${request.params.id}`;
+
+    pool.query(sqlQuery2, (error2, result2) => {
+      if (error2) {
+        console.log("Error executing query", error2.stack);
+        return;
+      }
+
+      const sqlQuery3 = `DELETE FROM comments WHERE notes_id=${request.params.id}`;
+
+      pool.query(sqlQuery3, (error3, result3) => {
+        if (error3) {
+          console.log("Error executing query", error3.stack);
+          return;
+        }
+
+        response.redirect(`/`);
+      });
+    });
   });
+});
+
+app.post("/note/:id/comment", (request, response) => {
+  const comment = request.body.comment;
+  const createdAt = new Date();
+  const userId = request.cookies.userId;
+  const noteId = request.params.id;
+
+  const sqlQuery = `INSERT INTO comments (comment, user_id, note_id) VALUES ('${comment}', ${userId}, ${noteId})`;
+
+  pool.query(sqlQuery, (error, result) => {
+    if (error) {
+      console.log("Error executing query", error.stack);
+      return;
+    }
+
+    response.redirect(`/note/${request.params.id}`);
+  })
 });
 
 // CREDENTIALS // 

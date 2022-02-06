@@ -56,6 +56,36 @@
           </div>
         </div>
       </div>
+
+      <div class="row mt-2">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-header py-3">
+              <h4 class="my-0 fw-normal">Comments</h4>
+            </div>
+            <div class="card-body">
+              <table class="table table-sm">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Comment</th>
+                    <th>Note Id</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% for (let i=0; i < comments.length; i += 1) { %>
+                  <tr>
+                    <td><%= i + 1 %></td>
+                    <td><%= comments[i]['comment'] %></td>
+                    <td><%= comments[i]['note_id'] %></td>
+                  </tr>
+                  <% } %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- JavaScript Bundle with Popper -->
