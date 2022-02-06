@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Notes | Log In</title>
+    <title>Add Note</title>
 
     <!-- CSS only -->
     <link
@@ -22,23 +22,23 @@
         <div class="col-sm-12">
           <div class="card">
             <div class="card-header py-3">
-              <h4 class="my-0 fw-normal">Log In</h4>
+              <h4 class="my-0 fw-normal">Add Note</h4>
             </div>
             <div class="card-body">
               <form
-                action="/login"
+                action="/note"
                 class="needs-validation"
                 novalidate=""
                 method="POST"
               >
                 <div class="row g-3 mb-3">
                   <div class="col-12">
-                    <label for="email" class="form-label">Email</label>
+                    <label for="behavior" class="form-label">Behavior</label>
                     <input
-                      type="email"
+                      type="text"
                       class="form-control"
-                      id="email"
-                      name="email"
+                      id="behavior"
+                      name="behavior"
                       placeholder=""
                       value=""
                       required=""
@@ -47,21 +47,36 @@
                 </div>
                 <div class="row g-3 mb-3">
                   <div class="col-12">
-                    <label for="password" class="form-label">Password</label>
-                    <input
-                      type="password"
+                    <label for="flockSize" class="form-label">Flock Size</label>
+                    <textarea
                       class="form-control"
-                      id="password"
-                      name="password"
+                      id="flockSize"
+                      name="flockSize"
+                      placeholder=""
+                      value=""
+                      required=""
+                    ></textarea>
+                  </div>
+                </div>
+                
+                <div class="row g-3 mb-3">
+                  <div class="col-12">
+                    <label for="dateTime" class="form-label"
+                      >Date & Time</label
+                    >
+                    <input
+                      type="datetime-local"
+                      class="form-control"
+                      id="dateTime"
+                      name="dateTime"
                       placeholder=""
                       value=""
                       required=""
                     />
                   </div>
-                  </div>
                 </div>
                 <button type="submit" class="btn btn-primary">
-                  Login
+                  Add Note
                 </button>
               </form>
             </div>
