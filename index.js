@@ -7,14 +7,28 @@ import moment from "moment";
 
 const app = express();
 const { Pool } = pg;
-const pgConnectionConfigs = {
-  user: "postgres",
-  host: "localhost",
-  database: "birding",
-  port: 5432,
-};
+
+let pgConnectionConfigs;
+
+if (process.env.ENV === 'PRODUCTION') {
+  pgConnectionConfigs = {
+    user: "postgres",
+    password: process.env.DB_PASSWORD,
+    host: "localhost",
+    database: "birding",
+    port: 5432,
+  };
+} else {
+  pgConnectionConfigs = {
+    user: "supershazwi",
+    host: "localhost",
+    database: "birding",
+    port: 5432,
+  };
+}
 
 const pool = new Pool(pgConnectionConfigs);
+const PORT = process.argv[2];
 const SALT = 'bananas are delicious';
 
 app.set("view engine", "ejs");
@@ -613,6 +627,6 @@ app.post("/login", (request, response) => {
   });
 });
 
-app.listen(3004);
+app.listen(PORT);
     
 
